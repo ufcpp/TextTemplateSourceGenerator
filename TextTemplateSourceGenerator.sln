@@ -1,0 +1,39 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31005.135
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TextTemplateSourceGenerator", "src\TextTemplateSourceGenerator\TextTemplateSourceGenerator.csproj", "{8A217AE4-1670-405B-8BF2-FF5CDFC2C2BD}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{A9AFC2F0-ABD3-40C1-8A7F-5E393598E4C5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{5607A99A-73B1-4686-B440-2675F079EFB3}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TextTemplateSourceGeneratorTest", "tests\TextTemplateSourceGeneratorTest\TextTemplateSourceGeneratorTest.csproj", "{971E9D99-2785-474D-A51A-9905B10BD707}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8A217AE4-1670-405B-8BF2-FF5CDFC2C2BD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8A217AE4-1670-405B-8BF2-FF5CDFC2C2BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8A217AE4-1670-405B-8BF2-FF5CDFC2C2BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8A217AE4-1670-405B-8BF2-FF5CDFC2C2BD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{971E9D99-2785-474D-A51A-9905B10BD707}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{971E9D99-2785-474D-A51A-9905B10BD707}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{971E9D99-2785-474D-A51A-9905B10BD707}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{971E9D99-2785-474D-A51A-9905B10BD707}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{8A217AE4-1670-405B-8BF2-FF5CDFC2C2BD} = {A9AFC2F0-ABD3-40C1-8A7F-5E393598E4C5}
+		{971E9D99-2785-474D-A51A-9905B10BD707} = {5607A99A-73B1-4686-B440-2675F079EFB3}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B30884D0-F447-4200-9C14-587E748C6085}
+	EndGlobalSection
+EndGlobal
