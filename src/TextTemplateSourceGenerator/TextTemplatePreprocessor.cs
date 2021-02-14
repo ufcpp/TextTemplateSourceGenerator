@@ -3,7 +3,9 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using TextTemplateSourceGenerator.Formatter;
 
 namespace TextTemplateSourceGenerator
 {
@@ -66,8 +68,14 @@ namespace TextTemplate
 
             if (context.SyntaxReceiver is not SyntaxReceiver receiver) return;
 
-            foreach (var m in receiver.CandidateMethods)
+            var groups = receiver.CandidateMethods.GroupBy(m => m.Parent);
+
+            foreach (var m in groups)
             {
+                var first = m.First();
+                var hintPath = HintPathHelper.GetHintPath(first);
+
+                context.AddSource(hintPath, SourceText.From("", Encoding.UTF8));
             }
         }
     }
