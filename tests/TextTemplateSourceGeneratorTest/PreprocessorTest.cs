@@ -34,25 +34,25 @@ using TextTemplate;
 
 partial class A
 {
-    [Template("")]
+    [Template("""")]
     public partial void M1(StringBuilder builder);
 
-    [Template("")]
+    [Template("""")]
     public partial void M2(StringBuilder builder);
 }
 
-partialc class A
+partial class A
 {
-    [Template("")]
+    [Template("""")]
     private partial void M3(StringBuilder builder);
 
-    [Template("")]
+    [Template("""")]
     private partial void M4(StringBuilder builder);
 }
 
 partial class B
 {
-    [Template("")]
+    [Template("""")]
     internal partial void M(StringBuilder builder);
 }
 ", new TextTemplatePreprocessor());
