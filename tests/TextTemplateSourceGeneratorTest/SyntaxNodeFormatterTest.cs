@@ -6,7 +6,7 @@ using Xunit;
 
 namespace TextTemplateSourceGeneratorTest
 {
-    public class FormatterTest
+    public class SyntaxNodeFormatterTest
     {
         [Fact]
         public async Task NestedTypes()
@@ -43,7 +43,7 @@ namespace X.Y
             var m = root.DescendantNodes(n => n is not MethodDeclarationSyntax).OfType<MethodDeclarationSyntax>();
             var t = (TypeDeclarationSyntax)m.First().Parent;
 
-            var result = TemplateFormatter.Format(t, m, _ => new(""));
+            var result = SyntaxNodeFormatter.Format(t, m, _ => new(""));
 
             Assert.Equal(@"#pragma warning disable 8019
 using System;

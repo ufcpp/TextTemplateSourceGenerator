@@ -7,7 +7,7 @@ using TextTemplateSourceGenerator.Parser;
 
 namespace TextTemplateSourceGenerator.Formatter
 {
-    public class TemplateFormatter
+    public class SyntaxNodeFormatter
     {
         public static string Format(TypeDeclarationSyntax type, IEnumerable<MethodDeclarationSyntax> methods, Func<MemberDeclarationSyntax, TemplateParser> getSyntaxElements)
         {
