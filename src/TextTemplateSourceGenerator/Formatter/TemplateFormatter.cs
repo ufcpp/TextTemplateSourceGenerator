@@ -12,6 +12,8 @@ namespace TextTemplateSourceGenerator.Formatter
         public static string Format(TypeDeclarationSyntax type, IEnumerable<MethodDeclarationSyntax> methods, Func<MemberDeclarationSyntax, TemplateParser> getSyntaxElements)
         {
             var sb = new StringBuilder();
+            sb.Append(@"#pragma warning disable 8019
+");
 
             var n = AppendDeclarations(sb, type);
             foreach (var m in methods)
