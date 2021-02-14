@@ -45,7 +45,8 @@ namespace X.Y
 
             var result = TemplateFormatter.Format(t, m, _ => new(""));
 
-            Assert.Equal(@"using System;
+            Assert.Equal(@"#pragma warning disable 8019
+using System;
 using System.Linq;
 namespace X.Y {
 namespace Z {

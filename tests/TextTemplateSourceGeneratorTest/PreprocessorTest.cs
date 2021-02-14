@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.CodeAnalysis.CSharp;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -57,8 +58,39 @@ partial class B
 }
 ", new TextTemplatePreprocessor());
 
-            //Assert.Empty(c.GetDiagnostics());
+            var diag = c.GetDiagnostics();
+
+            Assert.Empty(c.GetDiagnostics());
             Assert.Equal(5, c.SyntaxTrees.Count());
+        }
+
+        [Fact]
+        public void EmptyTemplate()
+        {
+            var c = CompilationHelper.Compile(@"using System.Text;
+using TextTemplate;
+
+partial class A
+{
+    [Template("""")]
+    public partial void M(StringBuilder builder);
+}", new TextTemplatePreprocessor());
+
+            Assert.Empty(c.GetDiagnostics());
+
+            var tree = c.SyntaxTrees.First(t => t.FilePath.EndsWith("A.M.cs"));
+
+            Assert.True(tree.IsEquivalentTo(SyntaxFactory.ParseSyntaxTree(@"#pragma warning 8019
+using System.Text;
+using TextTemplate;
+partial class A
+{
+public partial void M(StringBuilder builder)
+{
+
+}
+}
+")));
         }
     }
 }
