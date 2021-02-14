@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using TextTemplateSourceGenerator.Formatter;
+using TextTemplateSourceGenerator.Parser;
 
 namespace TextTemplateSourceGenerator
 {
@@ -67,19 +68,75 @@ namespace TextTemplate
 
             if (context.SyntaxReceiver is not SyntaxReceiver receiver) return;
 
-            var groups = receiver.CandidateMethods.GroupBy(m => m.Parent);
+            var groups = receiver.CandidateMethods.Where(m => GetTemplateAttribute(m) is not null).GroupBy(m => m.Parent);
 
-            foreach (var m in groups)
+            foreach (var g in groups)
             {
-                var first = m.First();
+                var first = g.First();
                 var hintPath = HintPathHelper.GetHintPath(first);
 
-                if (m.Key is not TypeDeclarationSyntax t) continue;
+                if (g.Key is not TypeDeclarationSyntax t) continue;
 
-                var generatedSource = SyntaxNodeFormatter.Format(t, m, _ => (new(""), ""));
+                var semanticModel = context.Compilation.GetSemanticModel(g.Key.SyntaxTree);
+
+                var generatedSource = SyntaxNodeFormatter.Format(t, g, m => ParseTemplateAttribute(m, semanticModel));
 
                 context.AddSource(hintPath, SourceText.From(generatedSource, Encoding.UTF8));
             }
+        }
+
+        private static AttributeArgumentListSyntax? GetTemplateAttribute(MemberDeclarationSyntax m)
+        {
+            foreach (var list in m.AttributeLists)
+            {
+                foreach (var a in list.Attributes)
+                {
+                    var name = a.Name.ToString();
+                    if (name == "Template"
+                        || name == "TemplateAttribute"
+                        || name.EndsWith(".Template")
+                        || name.EndsWith(".TemplateAttribute")
+                        )
+                    {
+                        return a.ArgumentList;
+                    }
+                }
+            }
+
+            return null;
+        }
+
+        private static (TemplateParser elements, string appendMethodName) ParseTemplateAttribute(MemberDeclarationSyntax m, SemanticModel semanticModel)
+        {
+            var a = GetTemplateAttribute(m);
+
+            if (a is null) return default;
+
+
+            TemplateParser parser = default;
+            string append = "builder.Append";
+
+            if (a.Arguments.Count >= 1)
+            {
+                var value = (string?)semanticModel.GetConstantValue(a.Arguments[0].Expression).Value;
+                if (value is not null)
+                {
+                    parser = new(value);
+                }
+            }
+
+            if (a.Arguments.Count >= 2)
+            {
+                var value = (string?)semanticModel.GetConstantValue(a.Arguments[1].Expression).Value;
+                if (value is not null)
+                {
+                    append = value;
+                }
+            }
+
+            //todo: IsNull diagnostincs
+
+            return (parser, append);
         }
     }
 }
