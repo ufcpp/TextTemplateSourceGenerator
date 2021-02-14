@@ -9,7 +9,7 @@ namespace TextTemplateSourceGenerator.Formatter
 {
     public class SyntaxNodeFormatter
     {
-        public static string Format(TypeDeclarationSyntax type, IEnumerable<MethodDeclarationSyntax> methods, Func<MemberDeclarationSyntax, TemplateParser> getSyntaxElements)
+        public static string Format(TypeDeclarationSyntax type, IEnumerable<MethodDeclarationSyntax> methods, Func<MemberDeclarationSyntax, (TemplateParser elements, string appendMethodName)> getSyntaxElements)
         {
             var sb = new StringBuilder();
             sb.Append(@"#pragma warning disable 8019
@@ -19,21 +19,20 @@ namespace TextTemplateSourceGenerator.Formatter
             foreach (var m in methods)
             {
                 AppendMethodSignature(sb, m);
-                AppendBody(sb, getSyntaxElements(m));
+                var (e, a) = getSyntaxElements(m);
+                AppendBody(sb, e, a);
             }
             AppendClose(sb, n);
 
             return sb.ToString();
         }
 
-        private static void AppendBody(StringBuilder sb, TemplateParser elements)
+        private static void AppendBody(StringBuilder sb, TemplateParser elements, string appendMethodName)
         {
             sb.Append(@"
 {
 ");
-            foreach (var e in elements)
-            {
-            }
+            TemplateFormatter.Format(sb, elements, appendMethodName);
 
             sb.Append(@"
 }

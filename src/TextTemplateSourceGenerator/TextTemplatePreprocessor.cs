@@ -76,7 +76,7 @@ namespace TextTemplate
 
                 if (m.Key is not TypeDeclarationSyntax t) continue;
 
-                var generatedSource = SyntaxNodeFormatter.Format(t, m, _ => new(""));
+                var generatedSource = SyntaxNodeFormatter.Format(t, m, _ => (new(""), ""));
 
                 context.AddSource(hintPath, SourceText.From(generatedSource, Encoding.UTF8));
             }
