@@ -11,6 +11,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{5607A99A
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TextTemplateSourceGeneratorTest", "tests\TextTemplateSourceGeneratorTest\TextTemplateSourceGeneratorTest.csproj", "{971E9D99-2785-474D-A51A-9905B10BD707}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{AB53CE82-4D4D-487A-B4F7-B307678950AE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StringToUtf8Preprocessor", "samples\StringToUtf8Preprocessor\StringToUtf8Preprocessor.csproj", "{0212049E-532E-4048-8412-D7B230AE30DA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -25,6 +29,10 @@ Global
 		{971E9D99-2785-474D-A51A-9905B10BD707}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{971E9D99-2785-474D-A51A-9905B10BD707}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{971E9D99-2785-474D-A51A-9905B10BD707}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0212049E-532E-4048-8412-D7B230AE30DA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0212049E-532E-4048-8412-D7B230AE30DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0212049E-532E-4048-8412-D7B230AE30DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0212049E-532E-4048-8412-D7B230AE30DA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -32,6 +40,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{8A217AE4-1670-405B-8BF2-FF5CDFC2C2BD} = {A9AFC2F0-ABD3-40C1-8A7F-5E393598E4C5}
 		{971E9D99-2785-474D-A51A-9905B10BD707} = {5607A99A-73B1-4686-B440-2675F079EFB3}
+		{0212049E-532E-4048-8412-D7B230AE30DA} = {AB53CE82-4D4D-487A-B4F7-B307678950AE}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B30884D0-F447-4200-9C14-587E748C6085}
