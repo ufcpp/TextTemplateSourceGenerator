@@ -22,7 +22,8 @@ $<
     foreach (var (methodName, value, accessibility) in methods)
     {
 $>\
-    $(AccessibilityText(accessibility)) static partial System.ReadOnlySpan<byte> $methodName() => new byte[] { $<
+    $(AccessibilityText(accessibility)) static partial System.ReadOnlySpan<byte> $methodName() => new byte[] { \
+$<
         foreach (var b in GetBytes(value))
         {
 $>\

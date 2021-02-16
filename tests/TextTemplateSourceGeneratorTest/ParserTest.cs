@@ -142,7 +142,7 @@ a")]
 \ b
 \ c
 a")]
-        public void EndOfLine(string source)
+        public void EndOfLine1(string source)
         {
             var numBackslash = source.Count(c => c == '\\');
 
@@ -158,6 +158,26 @@ a")]
             var last = result.Last();
             Assert.Equal(SyntaxElementType.String, last.Type);
             Assert.Equal(source.Split('\n').Last(), last.Element.ToString());
+        }
+
+        [Theory]
+        [InlineData(@"a\
+b")]
+        [InlineData(@"abc \
+def\
+ghi")]
+        public void EndOfLine2(string source)
+        {
+            var numBackslash = source.Count(c => c == '\\');
+            var result = new TemplateParser(source).ToList();
+
+            Assert.Equal(2 * numBackslash + 1, result.Count);
+
+            for (int i = 0; i < result.Count; i++)
+            {
+                if ((i % 2) == 0) Assert.Equal(SyntaxElementType.String, result[i].Type);
+                else Assert.Equal(SyntaxElementType.EndOfLine, result[i].Type);
+            }
         }
 
         [Fact]

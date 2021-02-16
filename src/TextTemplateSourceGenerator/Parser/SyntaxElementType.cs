@@ -36,7 +36,7 @@
         Raw,
 
         /// <summary>
-        /// \ any characters [eol]
+        /// \ [eol]
         /// ↓
         /// [removed]
         /// </summary>

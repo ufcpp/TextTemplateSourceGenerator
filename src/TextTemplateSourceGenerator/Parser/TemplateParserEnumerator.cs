@@ -115,6 +115,18 @@
                     {
                         break;
                     }
+                    if (c == '\\')
+                    {
+                        var j = i + 1;
+                        if (j < text.Length)
+                        {
+                            var c1 = text[j];
+                            if (c1 == '\r' || c1 == '\n')
+                            {
+                                break;
+                            }
+                        }
+                    }
                 }
             }
 
