@@ -133,6 +133,25 @@ $>")]
         }
 
         [Theory]
+        [InlineData(@"$if (x == ""abc"") ${")]
+        [InlineData(@"$for (var i = 0; i < length; ++i) ${")]
+        [InlineData(@"$foreach (var x in new[] { 1, 2, 3 }) ${")]
+        [InlineData(@"$while (source.MoveNext()) ${")]
+        public void ControlStart(string source)
+        {
+            var result = new TemplateParser(source).ToList();
+
+            Assert.Single(result);
+
+            var first = result[0];
+            Assert.Equal(SyntaxElementType.ControlStart, first.Type);
+            Assert.Equal(source, first.Text);
+            Assert.Equal(source[1..^2], first.Element.ToString());
+            Assert.Equal(0, first.Range.Start);
+            Assert.Equal(source.Length, first.Range.End);
+        }
+
+        [Theory]
         [InlineData(@"a")]
         [InlineData(@"\
 a")]

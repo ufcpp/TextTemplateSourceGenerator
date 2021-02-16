@@ -20,6 +20,7 @@ namespace TextTemplateSourceGenerator.Parser
             SyntaxElementType.String => Text.AsSpan(Range.Start, Range.Length),
             SyntaxElementType.Identifier => Text.AsSpan(Range.Start + 1, Range.Length - 1),
             SyntaxElementType.Expression => Text.AsSpan(Range.Start + 2, Range.Length - 3),
+            SyntaxElementType.ControlStart => Text.AsSpan(Range.Start + 1, Range.Length - 3),
             SyntaxElementType.Raw => Text.AsSpan(Range.Start + 2, Range.Length - 4),
             SyntaxElementType.EndOfLine => default,
             _ => default,

@@ -29,6 +29,20 @@
         Expression,
 
         /// <summary>
+        /// $if ELEMENT ${
+        /// $for ELEMENT ${
+        /// $foreach ELEMENT ${
+        /// $while ELEMENT ${
+        /// ↓
+        /// [keyword] ELEMENT {
+        /// </summary>
+        /// <remarks>
+        /// shorthand for
+        /// $lt;[keyword] ELEMENT {$gt;
+        /// </remarks>
+        ControlStart,
+
+        /// <summary>
         /// $&lt; ELEMENT $&gt;
         /// ↓
         ///  ELEMENT
@@ -40,6 +54,9 @@
         /// ↓
         /// [removed]
         /// </summary>
+        /// <remarks>
+        /// used for formatting purpose.
+        /// </remarks>
         EndOfLine,
     }
 }

@@ -72,6 +72,16 @@ $>")]
             Assert.Equal(source[2..^2], Format(source, "any name"));
         }
 
+        [Theory]
+        [InlineData(@"$if (x == ""abc"") ${")]
+        [InlineData(@"$for (var i = 0; i < length; ++i) ${")]
+        [InlineData(@"$foreach (var x in new[] { 1, 2, 3 }) ${")]
+        [InlineData(@"$while (source.MoveNext()) ${")]
+        public void ControlStart(string source)
+        {
+            Assert.Equal(source[1..^2] + '{', Format(source, "any name"));
+        }
+
         [Fact]
         public void Template1()
         {
@@ -81,10 +91,8 @@ namespace MyCommon
 {
     enum Generated
     {
-$<
-foreach (var (key, value) in args)
-{
-$>\
+$foreach (var (key, value) in args)
+${\
         /// <summary>
         /// $(key.ToUpper())
         /// </summary>
@@ -100,10 +108,8 @@ namespace MyCommon
 {
     enum Generated
     {
-"");
-foreach (var (key, value) in args)
-{
-append(@""        /// <summary>
+"");foreach (var (key, value) in args)
+{append(@""        /// <summary>
         /// "");append(key.ToUpper());append(@""
         /// </summary>
         "");append(key);append(@"" = "");append(value);append(@"",

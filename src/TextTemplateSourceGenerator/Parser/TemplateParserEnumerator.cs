@@ -1,4 +1,6 @@
-﻿namespace TextTemplateSourceGenerator.Parser
+﻿using System;
+
+namespace TextTemplateSourceGenerator.Parser
 {
     public struct TemplateParserEnumerator
     {
@@ -75,10 +77,37 @@
                             }
                         }
                     }
-                    else // $identifier
+                    else // identifier or keywords
                     {
-                        if (CharHelper.IsIdentifierStart(text[i]))
+                        // $if, $for, $foreach, $while
+                        var keyword =
+                            StartWith(text.AsSpan(i), "if") ? 2 :
+                            StartWith(text.AsSpan(i), "for") ? 3 :
+                            StartWith(text.AsSpan(i), "foreach") ? 7 :
+                            StartWith(text.AsSpan(i), "while") ? 5 :
+                            0;
+
+                        if (keyword != 0)
                         {
+                            i += keyword;
+                            _type = SyntaxElementType.ControlStart;
+
+                            for (++i; i < text.Length; ++i)
+                            {
+                                if (text[i] == '$')
+                                {
+                                    ++i;
+                                    if (i < text.Length && text[i] == '{')
+                                    {
+                                        ++i;
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                        else if (CharHelper.IsIdentifierStart(text[i]))
+                        {
+                            // $identifier
                             _type = SyntaxElementType.Identifier;
 
                             for (++i; i < text.Length; ++i)
@@ -134,6 +163,9 @@
 
             return true;
         }
+
+        private static bool StartWith(ReadOnlySpan<char> text, string value)
+            => value.Length <= text.Length && text.Slice(0, value.Length).Equals(value.AsSpan(), StringComparison.Ordinal);
 
         public SyntaxElement Current => new(_type, _text, new(_start, _end));
     }

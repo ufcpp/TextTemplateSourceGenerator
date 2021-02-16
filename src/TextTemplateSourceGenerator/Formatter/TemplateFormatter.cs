@@ -28,6 +28,10 @@ namespace TextTemplateSourceGenerator.Formatter
                         builder.Append(x.Element.ToString());
                         builder.Append(");");
                         break;
+                    case SyntaxElementType.ControlStart:
+                        builder.Append(x.Element.ToString());
+                        builder.Append('{');
+                        break;
                     case SyntaxElementType.Raw:
                         builder.Append(x.Element.ToString());
                         break;
