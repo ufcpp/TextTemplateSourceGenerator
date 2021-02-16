@@ -37,6 +37,14 @@ namespace TextTemplateSourceGenerator.Formatter
                         break;
                 }
             }
+
+            // builder.Append(x.Element.ToString());
+            // can be replaced to
+            // builder.Append(x.Element);
+            // if TargetFramework is netcoreapp2.1 or greater
+            // or
+            // fixed (char* p = x.Element) { builder.Append(p, x.Element.Length); }
+            // with unsafe option.
         }
     }
 }
