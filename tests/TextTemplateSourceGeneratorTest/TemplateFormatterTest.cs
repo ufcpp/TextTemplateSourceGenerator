@@ -40,7 +40,7 @@ not contain dollar sign
         public void Identifier(string source)
         {
             var append = "a";
-            Assert.Equal(append + "(" + source.Replace("$", "") + ");", Format(source, append));
+            Assert.Equal(append + "(" + source[1..] + ");", Format(source, append));
         }
 
         [Theory]
@@ -54,7 +54,7 @@ not contain dollar sign
         public void Expression(string source)
         {
             var append = "a";
-            Assert.Equal(append + "(" + source.Replace("${", "").Replace("}", "") + ");", Format(source, append));
+            Assert.Equal(append + "(" + source[2..^1] + ");", Format(source, append));
         }
 
         [Theory]
@@ -69,7 +69,7 @@ if (a is not null)
 $>")]
         public void Raw(string source)
         {
-            Assert.Equal(source.Replace("$<", "").Replace("$>", ""), Format(source, "any name"));
+            Assert.Equal(source[2..^2], Format(source, "any name"));
         }
 
         [Fact]

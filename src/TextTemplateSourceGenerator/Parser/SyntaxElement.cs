@@ -17,13 +17,13 @@ namespace TextTemplateSourceGenerator.Parser
 
         public ReadOnlySpan<char> Element => Type switch
         {
-            SyntaxElementType.String => Text.AsSpan()[Range],
-            SyntaxElementType.Identifier => Text.AsSpan()[Range][1..],
-            SyntaxElementType.Expression => Text.AsSpan()[Range][2..^1],
-            SyntaxElementType.Raw => Text.AsSpan()[Range][2..^2],
+            SyntaxElementType.String => Text.AsSpan(Range.Start, Range.Length),
+            SyntaxElementType.Identifier => Text.AsSpan(Range.Start + 1, Range.Length - 1),
+            SyntaxElementType.Expression => Text.AsSpan(Range.Start + 2, Range.Length - 3),
+            SyntaxElementType.Raw => Text.AsSpan(Range.Start + 2, Range.Length - 4),
             _ => default,
         };
 
-        public override string ToString() => Type + ": " + Text[Range];
+        public override string ToString() => Type + ": " + Text.Substring(Range.Start, Range.Length);
     }
 }

@@ -30,8 +30,8 @@ not contain dollar sign
             Assert.Equal(SyntaxElementType.String, first.Type);
             Assert.Equal(source, first.Text);
             Assert.Equal(source, first.Element.ToString());
-            Assert.Equal(0, first.Range.Start.Value);
-            Assert.Equal(source.Length, first.Range.End.Value);
+            Assert.Equal(0, first.Range.Start);
+            Assert.Equal(source.Length, first.Range.End);
         }
 
         [Theory]
@@ -48,9 +48,9 @@ not contain dollar sign
             var first = result[0];
             Assert.Equal(SyntaxElementType.Identifier, first.Type);
             Assert.Equal(source, first.Text);
-            Assert.Equal(source.Replace("$", ""), first.Element.ToString());
-            Assert.Equal(0, first.Range.Start.Value);
-            Assert.Equal(source.Length, first.Range.End.Value);
+            Assert.Equal(source[1..], first.Element.ToString());
+            Assert.Equal(0, first.Range.Start);
+            Assert.Equal(source.Length, first.Range.End);
         }
 
         [Theory]
@@ -101,9 +101,9 @@ not contain dollar sign
             var first = result[0];
             Assert.Equal(SyntaxElementType.Expression, first.Type);
             Assert.Equal(source, first.Text);
-            Assert.Equal(source.Replace("$", "").Replace("{", "").Replace("}", ""), first.Element.ToString());
-            Assert.Equal(0, first.Range.Start.Value);
-            Assert.Equal(source.Length, first.Range.End.Value);
+            Assert.Equal(source[2..^1], first.Element.ToString());
+            Assert.Equal(0, first.Range.Start);
+            Assert.Equal(source.Length, first.Range.End);
         }
 
         [Theory]
@@ -125,9 +125,9 @@ $>")]
             var first = result[0];
             Assert.Equal(SyntaxElementType.Raw, first.Type);
             Assert.Equal(source, first.Text);
-            Assert.Equal(source.Replace("$<", "").Replace("$>", ""), first.Element.ToString());
-            Assert.Equal(0, first.Range.Start.Value);
-            Assert.Equal(source.Length, first.Range.End.Value);
+            Assert.Equal(source[2..^2], first.Element.ToString());
+            Assert.Equal(0, first.Range.Start);
+            Assert.Equal(source.Length, first.Range.End);
         }
 
         [Fact]
