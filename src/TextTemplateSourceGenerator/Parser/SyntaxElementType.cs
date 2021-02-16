@@ -22,7 +22,7 @@
         Identifier,
 
         /// <summary>
-        /// ${ELEMENT}
+        /// $(ELEMENT)
         /// ↓
         /// builder.Append(ELEMENT);
         /// </summary>

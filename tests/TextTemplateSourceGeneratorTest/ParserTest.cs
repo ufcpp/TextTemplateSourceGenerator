@@ -85,13 +85,15 @@ not contain dollar sign
         }
 
         [Theory]
-        [InlineData("${aaa}")]
-        [InlineData("${aaa.ToLower()}")]
-        [InlineData("${aaa.Length * 5}")]
-        [InlineData("${\"aaa\" + aaa()}")]
-        [InlineData(@"${aaa
+        [InlineData("$(aaa)")]
+        [InlineData("$((1))")]
+        [InlineData("$(((1)))")]
+        [InlineData("$(aaa.ToLower())")]
+        [InlineData("$(aaa.Length * 5)")]
+        [InlineData("$(\"aaa\" + aaa())")]
+        [InlineData(@"$(aaa
 + bbb
-+ ccc}")]
++ ccc)")]
         public void Expression(string source)
         {
             var result = new TemplateParser(source).ToList();
@@ -144,7 +146,7 @@ foreach (var (key, value) in args)
 {
 $>
     /// <summary>
-    /// ${key.ToUpper()}
+    /// $(key.ToUpper())
     /// </summary>
     $key = $value,
 $<

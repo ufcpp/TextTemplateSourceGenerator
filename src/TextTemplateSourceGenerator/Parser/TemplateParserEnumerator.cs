@@ -48,15 +48,26 @@
                 if (i < text.Length)
                 {
                     var second = text[i];
-                    if (second == '{') // ${expression}
+                    if (second == '(') // $(expression)
                     {
+                        var bracketNest = 0;
                         for (++i; i < text.Length; ++i)
                         {
-                            if (text[i] == '}')
+                            var c = text[i];
+                            if (c == '(')
                             {
-                                ++i;
-                                _type = SyntaxElementType.Expression;
-                                break;
+                                ++bracketNest;
+                            }
+                            else if (c == ')')
+                            {
+                                --bracketNest;
+
+                                if (bracketNest < 0)
+                                {
+                                    ++i;
+                                    _type = SyntaxElementType.Expression;
+                                    break;
+                                }
                             }
                         }
                     }
