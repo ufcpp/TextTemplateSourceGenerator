@@ -73,8 +73,6 @@ partial class B
 }
 ", new TextTemplatePreprocessor());
 
-            var diag = c.GetDiagnostics();
-
             Assert.Empty(c.GetDiagnostics());
             Assert.Equal(5, c.SyntaxTrees.Count());
         }
