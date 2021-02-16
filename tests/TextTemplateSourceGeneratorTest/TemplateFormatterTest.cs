@@ -84,14 +84,14 @@ namespace MyCommon
 $<
 foreach (var (key, value) in args)
 {
-$>
+$>\
         /// <summary>
         /// $(key.ToUpper())
         /// </summary>
         $key = $value,
 $<
 }
-$>
+$>\
 }";
 
             const string expected = @"append(@""using System;
@@ -103,15 +103,13 @@ namespace MyCommon
 "");
 foreach (var (key, value) in args)
 {
-append(@""
-        /// <summary>
+append(@""        /// <summary>
         /// "");append(key.ToUpper());append(@""
         /// </summary>
         "");append(key);append(@"" = "");append(value);append(@"",
 "");
 }
-append(@""
-}"");";
+append(@""}"");";
 
             Assert.Equal(expected, Format(source, "append"));
         }

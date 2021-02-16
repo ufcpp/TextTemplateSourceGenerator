@@ -12,7 +12,9 @@ namespace TextTemplateSourceGenerator.Formatter
                 switch (x.Type)
                 {
                     case SyntaxElementType.Invalid:
-                        throw new InvalidSyntaxException(x.Text, x.Range);
+                        break;
+                        // simply skip invalid syntax elements.
+                        //throw new InvalidSyntaxException(x.Text, x.Range);
                     case SyntaxElementType.String:
                         builder.Append(appendMethodName);
                         builder.Append("(@\"");

@@ -28,20 +28,7 @@
 
             _type = SyntaxElementType.Invalid;
 
-            if (first != '$') // string
-            {
-                _type = SyntaxElementType.String;
-
-                for (++i; i < text.Length; ++i)
-                {
-                    var c = text[i];
-                    if (c == '$')
-                    {
-                        break;
-                    }
-                }
-            }
-            else
+            if (first == '$')
             {
                 ++i;
 
@@ -102,6 +89,31 @@
                                 }
                             }
                         }
+                    }
+                }
+            }
+            else if (first == '\\') // ignore characters until \n (including \n)
+            {
+                for (++i; i < text.Length; ++i)
+                {
+                    if (text[i] == '\n')
+                    {
+                        ++i;
+                        _type = SyntaxElementType.EndOfLine;
+                        break;
+                    }
+                }
+            }
+            else // string
+            {
+                _type = SyntaxElementType.String;
+
+                for (++i; i < text.Length; ++i)
+                {
+                    var c = text[i];
+                    if (c == '$')
+                    {
+                        break;
                     }
                 }
             }

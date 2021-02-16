@@ -34,5 +34,12 @@
         ///  ELEMENT
         /// </summary>
         Raw,
+
+        /// <summary>
+        /// \ any characters [eol]
+        /// ↓
+        /// [removed]
+        /// </summary>
+        EndOfLine,
     }
 }

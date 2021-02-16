@@ -132,6 +132,34 @@ $>")]
             Assert.Equal(source.Length, first.Range.End);
         }
 
+        [Theory]
+        [InlineData(@"a")]
+        [InlineData(@"\
+a")]
+        [InlineData(@"\comment
+a")]
+        [InlineData(@"\ a
+\ b
+\ c
+a")]
+        public void EndOfLine(string source)
+        {
+            var numBackslash = source.Count(c => c == '\\');
+
+            var result = new TemplateParser(source).ToList();
+
+            Assert.Equal(numBackslash + 1, result.Count);
+
+            foreach (var x in result.SkipLast(1))
+            {
+                Assert.Equal(SyntaxElementType.EndOfLine, x.Type);
+            }
+
+            var last = result.Last();
+            Assert.Equal(SyntaxElementType.String, last.Type);
+            Assert.Equal(source.Split('\n').Last(), last.Element.ToString());
+        }
+
         [Fact]
         public void Template1()
         {
@@ -144,14 +172,14 @@ namespace MyCommon
 $<
 foreach (var (key, value) in args)
 {
-$>
+$>\
     /// <summary>
     /// $(key.ToUpper())
     /// </summary>
     $key = $value,
 $<
 }
-$>
+$>\
 }";
             var expected = new[]
             {
@@ -166,8 +194,8 @@ namespace MyCommon
 foreach (var (key, value) in args)
 {
 "),
-                (SyntaxElementType.String, @"
-    /// <summary>
+                (SyntaxElementType.EndOfLine, ""),
+                (SyntaxElementType.String, @"    /// <summary>
     /// "),
                 (SyntaxElementType.Expression, @"key.ToUpper()"),
                 (SyntaxElementType.String, @"
@@ -181,13 +209,22 @@ foreach (var (key, value) in args)
                 (SyntaxElementType.Raw, @"
 }
 "),
-                (SyntaxElementType.String, @"
-}"),
+                (SyntaxElementType.EndOfLine, ""),
+                (SyntaxElementType.String, @"}"),
             };
 
             var result = new TemplateParser(source).ToList();
 
-            Assert.Equal(expected, result.Select(x => (x.Type, x.Element.ToString())));
+            for (int i = 0; i < expected.Length; i++)
+            {
+                var e = expected[i];
+                var a = result[i];
+
+                Assert.Equal(e.Item1, a.Type);
+                Assert.Equal(e.Item2, a.Element.ToString());
+            }
+
+            //Assert.Equal(expected, result.Select(x => (x.Type, x.Element.ToString())));
         }
     }
 }
