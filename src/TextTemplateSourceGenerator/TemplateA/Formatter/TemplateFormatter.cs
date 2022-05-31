@@ -1,7 +1,7 @@
 ﻿using System.Text;
-using TextTemplateSourceGenerator.Parser;
+using TextTemplateSourceGenerator.TemplateA.Parser;
 
-namespace TextTemplateSourceGenerator.Formatter
+namespace TextTemplateSourceGenerator.TemplateA.Formatter
 {
     public class TemplateFormatter
     {

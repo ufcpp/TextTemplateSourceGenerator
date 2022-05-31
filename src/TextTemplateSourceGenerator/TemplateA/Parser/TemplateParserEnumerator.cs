@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TextTemplateSourceGenerator.Parser
+namespace TextTemplateSourceGenerator.TemplateA.Parser
 {
     public struct TemplateParserEnumerator
     {

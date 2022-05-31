@@ -2,7 +2,7 @@
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using System.Text;
 
-namespace TextTemplateSourceGenerator.Formatter
+namespace TextTemplateSourceGenerator.TemplateA.Formatter
 {
     public class HintPathHelper
     {

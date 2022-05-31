@@ -1,6 +1,7 @@
 ﻿using System;
+using TextTemplateSourceGenerator.TemplateA;
 
-namespace TextTemplateSourceGenerator.Parser
+namespace TextTemplateSourceGenerator.TemplateA.Parser
 {
     public class InvalidSyntaxException : InvalidOperationException
     {

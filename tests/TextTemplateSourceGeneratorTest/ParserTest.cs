@@ -1,5 +1,5 @@
 using System.Linq;
-using TextTemplateSourceGenerator.Parser;
+using TextTemplateSourceGenerator.TemplateA.Parser;
 using Xunit;
 
 namespace TextTemplateSourceGeneratorTest

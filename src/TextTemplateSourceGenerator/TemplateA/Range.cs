@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TextTemplateSourceGenerator
+namespace TextTemplateSourceGenerator.TemplateA
 {
     public readonly struct Range : IEquatable<Range>
     {

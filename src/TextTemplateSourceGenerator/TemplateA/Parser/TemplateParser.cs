@@ -1,4 +1,4 @@
-﻿namespace TextTemplateSourceGenerator.Parser
+﻿namespace TextTemplateSourceGenerator.TemplateA.Parser
 {
     public readonly struct TemplateParser
     {

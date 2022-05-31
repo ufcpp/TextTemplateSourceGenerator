@@ -4,10 +4,10 @@ using Microsoft.CodeAnalysis.Text;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using TextTemplateSourceGenerator.Formatter;
-using TextTemplateSourceGenerator.Parser;
+using TextTemplateSourceGenerator.TemplateA.Formatter;
+using TextTemplateSourceGenerator.TemplateA.Parser;
 
-namespace TextTemplateSourceGenerator
+namespace TextTemplateSourceGenerator.TemplateA
 {
     [Generator]
     public class TextTemplatePreprocessor : ISourceGenerator

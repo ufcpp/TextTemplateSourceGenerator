@@ -1,6 +1,6 @@
 ﻿using Microsoft.CodeAnalysis.CSharp;
 using System.Linq;
-using TextTemplateSourceGenerator;
+using TextTemplateSourceGenerator.TemplateA;
 using Xunit;
 
 namespace TextTemplateSourceGeneratorTest
