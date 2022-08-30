@@ -45,120 +45,173 @@ namespace TextTemplateSourceGeneratorTest
         [Fact]
         public void GroupByDeclaration()
         {
-            var c = CompilationHelper.Compile(@"using System.Text;
-using TextTemplate;
+            var c = CompilationHelper.Compile("""
+                using System.Text;
+                using TextTemplate;
 
-partial class A
-{
-    [Template("""")]
-    public partial void M1(StringBuilder builder);
+                partial class A
+                {
+                    [Template("")]
+                    public partial void M1(StringBuilder builder);
 
-    [Template("""")]
-    public partial void M2(StringBuilder builder);
-}
+                    [Template("")]
+                    public partial void M2(StringBuilder builder);
+                }
 
-partial class A
-{
-    [Template("""")]
-    private partial void M3(StringBuilder builder);
+                partial class A
+                {
+                    [Template("")]
+                    private partial void M3(StringBuilder builder);
 
-    [Template("""")]
-    private partial void M4(StringBuilder builder);
-}
+                    [Template("")]
+                    private partial void M4(StringBuilder builder);
+                }
 
-partial class B
-{
-    [Template("""")]
-    internal partial void M(StringBuilder builder);
-}
-", new TextTemplatePreprocessor());
+                partial class B
+                {
+                    [Template("")]
+                    internal partial void M(StringBuilder builder);
+                }
+
+                """, new TextTemplatePreprocessor());
 
             Assert.Empty(c.GetDiagnostics());
-            Assert.Equal(5, c.SyntaxTrees.Count());
+            Assert.Equal(7, c.SyntaxTrees.Count()); // An added source, TemplateAttribute.cs, and files generated from 5 methods
         }
 
         [Fact]
         public void EmptyTemplate()
         {
-            var c = CompilationHelper.Compile(@"using System.Text;
-using TextTemplate;
+            var c = CompilationHelper.Compile("""
+                using System.Text;
+                using TextTemplate;
 
-partial class A
-{
-    [Template("""")]
-    public partial void M(StringBuilder builder);
-}", new TextTemplatePreprocessor());
+                partial class A
+                {
+                    [Template("")]
+                    public partial void M(StringBuilder builder);
+                }
+                """, new TextTemplatePreprocessor());
 
             var diags = c.GetDiagnostics();
             Assert.Empty(c.GetDiagnostics());
 
-            var tree = c.SyntaxTrees.First(t => t.FilePath.EndsWith("A.M.cs"));
+            var tree = c.SyntaxTrees.First(t => t.FilePath.EndsWith("A_M_template.cs"));
 
-            Assert.True(tree.IsEquivalentTo(SyntaxFactory.ParseSyntaxTree(@"#pragma warning 8019
-using System.Text;
-using TextTemplate;
-partial class A
-{
-public partial void M(StringBuilder builder)
-{
+            Assert.True(tree.IsEquivalentTo(SyntaxFactory.ParseSyntaxTree("""
+                #pragma warning 8019
+                using System.Text;
+                using TextTemplate;
+                partial class A
+                {
+                public partial void M(StringBuilder builder)
+                {
 
-}
-}
-")));
+                }
+                }
+
+                """)));
         }
 
         [Fact]
         public void Template1()
         {
-            var c = CompilationHelper.Compile(@"
-partial class A
-{
-    [TextTemplate.Template(""($x, $y)"")]
-    public partial void M(System.Text.StringBuilder builder, object x, object y);
-}", new TextTemplatePreprocessor());
+            var c = CompilationHelper.Compile("""
+
+                partial class A
+                {
+                    [TextTemplate.Template("($x, $y)")]
+                    public partial void M(System.Text.StringBuilder builder, object x, object y);
+                }
+                """, new TextTemplatePreprocessor());
 
             Assert.Empty(c.GetDiagnostics());
 
-            var tree = c.SyntaxTrees.First(t => t.FilePath.EndsWith("A.M.cs"));
+            var tree = c.SyntaxTrees.First(t => t.FilePath.EndsWith("A_M_template.cs"));
 
-            Assert.True(tree.IsEquivalentTo(SyntaxFactory.ParseSyntaxTree(@"#pragma warning 8019
-partial class A
-{
-public partial void M(System.Text.StringBuilder builder, object x, object y)
-{
-builder.Append(@""("");builder.Append(x);builder.Append(@"", "");builder.Append(y);builder.Append(@"")"");
-}
-}
-")));
+            Assert.True(tree.IsEquivalentTo(SyntaxFactory.ParseSyntaxTree("""
+                #pragma warning 8019
+                partial class A
+                {
+                public partial void M(System.Text.StringBuilder builder, object x, object y)
+                {
+                builder.Append(@"(");builder.Append(x);builder.Append(@", ");builder.Append(y);builder.Append(@")");
+                }
+                }
+
+                """)));
         }
 
         [Fact]
         public void Template2()
         {
-            var c = CompilationHelper.Compile(@"
-partial class A
-{
-    [TextTemplate.Template(@""$<
-void a(object x) => builder.Append(x);
-$>($x, $y)"", ""a"")]
-    public partial void M(System.Text.StringBuilder builder, object x, object y);
-}", new TextTemplatePreprocessor());
+            var c = CompilationHelper.Compile("""
+
+                partial class A
+                {
+                    [TextTemplate.Template(@"$<
+                void a(object x) => builder.Append(x);
+                $>($x, $y)", "a")]
+                    public partial void M(System.Text.StringBuilder builder, object x, object y);
+                }
+                """, new TextTemplatePreprocessor());
 
             Assert.Empty(c.GetDiagnostics());
 
-            var tree = c.SyntaxTrees.First(t => t.FilePath.EndsWith("A.M.cs"));
+            var tree = c.SyntaxTrees.First(t => t.FilePath.EndsWith("A_M_template.cs"));
 
-            Assert.True(tree.IsEquivalentTo(SyntaxFactory.ParseSyntaxTree(@"#pragma warning 8019
-partial class A
-{
-public partial void M(System.Text.StringBuilder builder, object x, object y)
-{
+            Assert.True(tree.IsEquivalentTo(SyntaxFactory.ParseSyntaxTree("""
+                #pragma warning 8019
+                partial class A
+                {
+                public partial void M(System.Text.StringBuilder builder, object x, object y)
+                {
 
-void a(object x) => builder.Append(x);
-a(@""("");a(x);a(@"", "");a(y);a(@"")"");
-}
-}
-")));
+                void a(object x) => builder.Append(x);
+                a(@"(");a(x);a(@", ");a(y);a(@")");
+                }
+                }
+
+                """)));
+        }
+
+        [Fact]
+        public void Namespace()
+        {
+            var c = CompilationHelper.Compile("""
+                using System.Text;
+                using TextTemplate;
+
+                namespace N;
+
+                partial class A
+                {
+                    [Template("")]
+                    public partial void M(StringBuilder builder);
+                }
+                """, new TextTemplatePreprocessor());
+
+            var diags = c.GetDiagnostics();
+            Assert.Empty(c.GetDiagnostics());
+
+            var tree = c.SyntaxTrees.First(t => t.FilePath.EndsWith("A_M_template.cs"));
+
+            Assert.True(tree.IsEquivalentTo(SyntaxFactory.ParseSyntaxTree("""
+                #pragma warning 8019
+                using System.Text;
+                using TextTemplate;
+
+                namespace N {
+
+                partial class A
+                {
+                public partial void M(StringBuilder builder)
+                {
+
+                }
+                }
+                }
+                """)));
         }
     }
 }

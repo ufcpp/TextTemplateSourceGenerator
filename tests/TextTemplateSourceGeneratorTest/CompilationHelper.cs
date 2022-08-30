@@ -23,12 +23,12 @@ namespace TextTemplateSourceGeneratorTest
                 options: _copt);
         }
 
-        public static Compilation Compile(string source, params ISourceGenerator[] generators)
+        public static Compilation Compile(string source, params IIncrementalGenerator[] generators)
         {
             var compilation = Compile(source);
 
             // apply the source generator
-            var driver = CSharpGeneratorDriver.Create(generators, parseOptions: _opt);
+            var driver = CSharpGeneratorDriver.Create(generators).WithUpdatedParseOptions(_opt);
             driver.RunGeneratorsAndUpdateCompilation(compilation, out var resultCompilation, out _);
 
             return resultCompilation;

@@ -21,15 +21,21 @@ namespace TextTemplateSourceGeneratorTest
 
         [Theory]
         [InlineData("aaa")]
-        [InlineData(@"any text
-not contain dollar sign
-ΩДあ中
-!""#%&'()=~|`{+*}<>?_
-")]
+        [InlineData("""
+            any text
+            not contain dollar sign
+            ΩДあ中
+            !"#%&'()=~|`{+*}<>?_
+
+            """)]
         public void String(string source)
         {
             var append = "a";
-            Assert.Equal(append + "(@\"" + source + "\");", Format(source, append));
+            Assert.Equal(append + """
+                (@"
+                """ + source + """
+                ");
+                """, Format(source, append));
         }
 
         [Theory]
@@ -48,9 +54,11 @@ not contain dollar sign
         [InlineData("$(aaa.ToLower())")]
         [InlineData("$(aaa.Length * 5)")]
         [InlineData("$(\"aaa\" + aaa())")]
-        [InlineData(@"$(aaa
-+ bbb
-+ ccc)")]
+        [InlineData("""
+            $(aaa
+            + bbb
+            + ccc)
+            """)]
         public void Expression(string source)
         {
             var append = "a";
@@ -61,12 +69,14 @@ not contain dollar sign
         [InlineData("$<if (true) {$>")]
         [InlineData("$<while (i >= 0 && i < Length ) {$>")]
         [InlineData("$<}$>")]
-        [InlineData(@"$<
-if (a is not null)
-{
-    foreach (var x in a)
-    {
-$>")]
+        [InlineData("""
+            $<
+            if (a is not null)
+            {
+                foreach (var x in a)
+                {
+            $>
+            """)]
         public void Raw(string source)
         {
             Assert.Equal(source[2..^2], Format(source, "any name"));
@@ -85,37 +95,41 @@ $>")]
         [Fact]
         public void Template1()
         {
-            const string source = @"using System;
+            const string source = """
+                using System;
 
-namespace MyCommon
-{
-    enum Generated
-    {
-$foreach (var (key, value) in args)
-${\
-        /// <summary>
-        /// $(key.ToUpper())
-        /// </summary>
-        $key = $value,
-$<
-}
-$>\
-}";
+                namespace MyCommon
+                {
+                    enum Generated
+                    {
+                $foreach (var (key, value) in args)
+                ${\
+                        /// <summary>
+                        /// $(key.ToUpper())
+                        /// </summary>
+                        $key = $value,
+                $<
+                }
+                $>\
+                }
+                """;
 
-            const string expected = @"append(@""using System;
+            const string expected = """
+                append(@"using System;
 
-namespace MyCommon
-{
-    enum Generated
-    {
-"");foreach (var (key, value) in args)
-{append(@""        /// <summary>
-        /// "");append(key.ToUpper());append(@""
-        /// </summary>
-        "");append(key);append(@"" = "");append(value);append(@"",
-"");
-}
-append(@""}"");";
+                namespace MyCommon
+                {
+                    enum Generated
+                    {
+                ");foreach (var (key, value) in args)
+                {append(@"        /// <summary>
+                        /// ");append(key.ToUpper());append(@"
+                        /// </summary>
+                        ");append(key);append(@" = ");append(value);append(@",
+                ");
+                }
+                append(@"}");
+                """;
 
             Assert.Equal(expected, Format(source, "append"));
         }

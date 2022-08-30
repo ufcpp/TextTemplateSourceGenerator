@@ -15,11 +15,13 @@ namespace TextTemplateSourceGeneratorTest
 
         [Theory]
         [InlineData("aaa")]
-        [InlineData(@"any text
-not contain dollar sign
-ƒ¶„D‚ ’†
-!""#%&'()=~|`{+*}<>?_
-")]
+        [InlineData("""
+            any text
+            not contain dollar sign
+            ƒ¶„D‚ ’†
+            !"#%&'()=~|`{+*}<>?_
+
+            """)]
         public void PlainText(string source)
         {
             var result = new TemplateParser(source).ToList();
@@ -91,9 +93,11 @@ not contain dollar sign
         [InlineData("$(aaa.ToLower())")]
         [InlineData("$(aaa.Length * 5)")]
         [InlineData("$(\"aaa\" + aaa())")]
-        [InlineData(@"$(aaa
-+ bbb
-+ ccc)")]
+        [InlineData("""
+            $(aaa
+            + bbb
+            + ccc)
+            """)]
         public void Expression(string source)
         {
             var result = new TemplateParser(source).ToList();
@@ -112,12 +116,14 @@ not contain dollar sign
         [InlineData("$<if (true) {$>")]
         [InlineData("$<while (i >= 0 && i < Length ) {$>")]
         [InlineData("$<}$>")]
-        [InlineData(@"$<
-if (a is not null)
-{
-    foreach (var x in a)
-    {
-$>")]
+        [InlineData("""
+            $<
+            if (a is not null)
+            {
+                foreach (var x in a)
+                {
+            $>
+            """)]
         public void Raw(string source)
         {
             var result = new TemplateParser(source).ToList();
@@ -153,14 +159,20 @@ $>")]
 
         [Theory]
         [InlineData(@"a")]
-        [InlineData(@"\
-a")]
-        [InlineData(@"\comment
-a")]
-        [InlineData(@"\ a
-\ b
-\ c
-a")]
+        [InlineData("""
+            \
+            a
+            """)]
+        [InlineData("""
+            \comment
+            a
+            """)]
+        [InlineData("""
+            \ a
+            \ b
+            \ c
+            a
+            """)]
         public void EndOfLine1(string source)
         {
             var numBackslash = source.Count(c => c == '\\');
@@ -180,11 +192,15 @@ a")]
         }
 
         [Theory]
-        [InlineData(@"a\
-b")]
-        [InlineData(@"abc \
-def\
-ghi")]
+        [InlineData("""
+            a\
+            b
+            """)]
+        [InlineData("""
+            abc \
+            def\
+            ghi
+            """)]
         public void EndOfLine2(string source)
         {
             var numBackslash = source.Count(c => c == '\\');
@@ -202,52 +218,66 @@ ghi")]
         [Fact]
         public void Template1()
         {
-            const string source = @"using System;
+            const string source = """
+                using System;
 
-namespace MyCommon
-{
-    enum Generated
-    {
-$<
-foreach (var (key, value) in args)
-{
-$>\
-    /// <summary>
-    /// $(key.ToUpper())
-    /// </summary>
-    $key = $value,
-$<
-}
-$>\
-}";
+                namespace MyCommon
+                {
+                    enum Generated
+                    {
+                $<
+                foreach (var (key, value) in args)
+                {
+                $>\
+                    /// <summary>
+                    /// $(key.ToUpper())
+                    /// </summary>
+                    $key = $value,
+                $<
+                }
+                $>\
+                }
+                """;
             var expected = new[]
             {
-                (SyntaxElementType.String, @"using System;
+                (SyntaxElementType.String, """
+                using System;
 
-namespace MyCommon
-{
-    enum Generated
-    {
-"),
-                (SyntaxElementType.Raw, @"
-foreach (var (key, value) in args)
-{
-"),
+                namespace MyCommon
+                {
+                    enum Generated
+                    {
+
+                """),
+                (SyntaxElementType.Raw, """
+
+                foreach (var (key, value) in args)
+                {
+
+                """),
                 (SyntaxElementType.EndOfLine, ""),
-                (SyntaxElementType.String, @"    /// <summary>
-    /// "),
+                (SyntaxElementType.String, """
+                    /// <summary>
+                    /// 
+                """),
                 (SyntaxElementType.Expression, @"key.ToUpper()"),
-                (SyntaxElementType.String, @"
-    /// </summary>
-    "),
+                (SyntaxElementType.String, """
+
+                    /// </summary>
+                    
+                """),
                 (SyntaxElementType.Identifier, @"key"),
                 (SyntaxElementType.String, @" = "),
                 (SyntaxElementType.Identifier, @"value"),
-                (SyntaxElementType.String, @",
-"),
-                (SyntaxElementType.Raw, @"
-}
-"),
+                (SyntaxElementType.String, """
+                ,
+
+                """),
+                (SyntaxElementType.Raw, """
+
+                }
+
+                """),
                 (SyntaxElementType.EndOfLine, ""),
                 (SyntaxElementType.String, @"}"),
             };
