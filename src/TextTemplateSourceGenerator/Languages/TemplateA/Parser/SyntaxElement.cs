@@ -1,4 +1,4 @@
-﻿namespace TextTemplateSourceGenerator.TemplateA.Parser;
+﻿namespace TextTemplateSourceGenerator.Languages.TemplateA.Parser;
 
 public readonly struct SyntaxElement
 {

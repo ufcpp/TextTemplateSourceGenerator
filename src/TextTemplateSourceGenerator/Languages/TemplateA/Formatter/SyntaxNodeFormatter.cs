@@ -1,9 +1,9 @@
 ﻿using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using System.Text;
-using TextTemplateSourceGenerator.TemplateA.Parser;
+using TextTemplateSourceGenerator.Languages.TemplateA.Parser;
 
-namespace TextTemplateSourceGenerator.TemplateA.Formatter;
+namespace TextTemplateSourceGenerator.Languages.TemplateA.Formatter;
 
 public class SyntaxNodeFormatter
 {

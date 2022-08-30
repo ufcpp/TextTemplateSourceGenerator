@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using TextTemplateSourceGenerator.TemplateA.Parser;
+using TextTemplateSourceGenerator.Languages.TemplateA.Parser;
 
 namespace TextTemplateSourceGeneratorTest
 {

@@ -1,7 +1,7 @@
 ﻿using System.Globalization;
 using static System.Globalization.UnicodeCategory;
 
-namespace TextTemplateSourceGenerator.TemplateA.Parser;
+namespace TextTemplateSourceGenerator.Languages;
 
 class CharHelper
 {

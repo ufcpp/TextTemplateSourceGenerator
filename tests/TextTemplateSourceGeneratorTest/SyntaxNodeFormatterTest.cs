@@ -1,7 +1,7 @@
 ﻿using Microsoft.CodeAnalysis.CSharp.Syntax;
 using System.Linq;
 using System.Threading.Tasks;
-using TextTemplateSourceGenerator.TemplateA.Formatter;
+using TextTemplateSourceGenerator.Languages.TemplateA.Formatter;
 using Xunit;
 
 namespace TextTemplateSourceGeneratorTest

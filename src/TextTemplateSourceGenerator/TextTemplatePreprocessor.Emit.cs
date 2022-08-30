@@ -3,7 +3,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
 using System.Collections.Immutable;
 using System.Text;
-using TextTemplateSourceGenerator.TemplateA.Formatter;
+using TextTemplateSourceGenerator.Languages.TemplateA.Formatter;
 
 namespace TextTemplateSourceGenerator;
 
