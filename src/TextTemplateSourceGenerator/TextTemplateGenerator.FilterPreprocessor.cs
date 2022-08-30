@@ -4,7 +4,7 @@ using Microsoft.CodeAnalysis.CSharp;
 
 namespace TextTemplateSourceGenerator;
 
-partial class TextTemplatePreprocessor
+partial class TextTemplateGenerator
 {
     private const string methodAttributeName = "TextTemplate.TemplatePreprocessorAttribute";
 

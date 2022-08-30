@@ -4,7 +4,7 @@ using System.Text;
 
 namespace TextTemplateSourceGenerator;
 
-partial class TextTemplatePreprocessor
+partial class TextTemplateGenerator
 {
     private const string attributesText = """
         using System;

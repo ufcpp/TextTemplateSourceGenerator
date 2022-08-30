@@ -10,7 +10,7 @@ namespace TextTemplateSourceGeneratorTest
         [Fact]
         public void TemplateAttributeAdded()
         {
-            var c = CompilationHelper.Compile("", new TextTemplatePreprocessor());
+            var c = CompilationHelper.Compile("", new TextTemplateGenerator());
             Assert.Empty(c.GetDiagnostics());
             Assert.Contains(c.SyntaxTrees, s => s.FilePath.Contains("TemplateAttributes.cs"));
         }
@@ -18,7 +18,7 @@ namespace TextTemplateSourceGeneratorTest
         [Fact]
         public void NoTemplates()
         {
-            var c = CompilationHelper.Compile("class A { }", new TextTemplatePreprocessor());
+            var c = CompilationHelper.Compile("class A { }", new TextTemplateGenerator());
             Assert.Empty(c.GetDiagnostics());
             Assert.Equal(2, c.SyntaxTrees.Count());
         }
@@ -26,18 +26,18 @@ namespace TextTemplateSourceGeneratorTest
         [Fact]
         public void NoTemplateArguments()
         {
-            var c = CompilationHelper.Compile("class A { [TextTemplate.TemplatePreprocessor] private partial void M(); }", new TextTemplatePreprocessor());
+            var c = CompilationHelper.Compile("class A { [TextTemplate.TemplatePreprocessor] private partial void M(); }", new TextTemplateGenerator());
             Assert.Equal(2, c.SyntaxTrees.Count());
         }
 
         [Fact]
         public void NoPartial()
         {
-            var c = CompilationHelper.Compile("class A { [TextTemplate.TemplatePreprocessor(\"\")] private void M() { } }", new TextTemplatePreprocessor());
+            var c = CompilationHelper.Compile("class A { [TextTemplate.TemplatePreprocessor(\"\")] private void M() { } }", new TextTemplateGenerator());
             Assert.Empty(c.GetDiagnostics());
             Assert.Equal(2, c.SyntaxTrees.Count());
 
-            c = CompilationHelper.Compile("abstract class A { [TextTemplate.TemplatePreprocessor(\"\")] protected abstract void M(); }", new TextTemplatePreprocessor());
+            c = CompilationHelper.Compile("abstract class A { [TextTemplate.TemplatePreprocessor(\"\")] protected abstract void M(); }", new TextTemplateGenerator());
             Assert.Empty(c.GetDiagnostics());
             Assert.Equal(2, c.SyntaxTrees.Count());
         }
@@ -73,7 +73,7 @@ namespace TextTemplateSourceGeneratorTest
                     internal partial void M(StringBuilder builder);
                 }
 
-                """, new TextTemplatePreprocessor());
+                """, new TextTemplateGenerator());
 
             Assert.Empty(c.GetDiagnostics());
             Assert.Equal(7, c.SyntaxTrees.Count()); // An added source, TemplateAttributes.cs, and files generated from 5 methods
@@ -91,7 +91,7 @@ namespace TextTemplateSourceGeneratorTest
                     [TemplatePreprocessor("")]
                     public partial void M(StringBuilder builder);
                 }
-                """, new TextTemplatePreprocessor());
+                """, new TextTemplateGenerator());
 
             var diags = c.GetDiagnostics();
             Assert.Empty(c.GetDiagnostics());
@@ -123,7 +123,7 @@ namespace TextTemplateSourceGeneratorTest
                     [TextTemplate.TemplatePreprocessor("($x, $y)")]
                     public partial void M(System.Text.StringBuilder builder, object x, object y);
                 }
-                """, new TextTemplatePreprocessor());
+                """, new TextTemplateGenerator());
 
             Assert.Empty(c.GetDiagnostics());
 
@@ -154,7 +154,7 @@ namespace TextTemplateSourceGeneratorTest
                 $>($x, $y)", "a")]
                     public partial void M(System.Text.StringBuilder builder, object x, object y);
                 }
-                """, new TextTemplatePreprocessor());
+                """, new TextTemplateGenerator());
 
             Assert.Empty(c.GetDiagnostics());
 
@@ -189,7 +189,7 @@ namespace TextTemplateSourceGeneratorTest
                     [TemplatePreprocessor("")]
                     public partial void M(StringBuilder builder);
                 }
-                """, new TextTemplatePreprocessor());
+                """, new TextTemplateGenerator());
 
             var diags = c.GetDiagnostics();
             Assert.Empty(c.GetDiagnostics());

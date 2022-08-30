@@ -7,7 +7,7 @@ using TextTemplateSourceGenerator.Languages.TemplateA.Formatter;
 
 namespace TextTemplateSourceGenerator;
 
-partial class TextTemplatePreprocessor
+partial class TextTemplateGenerator
 {
     private void Emit(SourceProductionContext context, ImmutableArray<MethodTemplate> methods)
     {

@@ -3,7 +3,7 @@
 namespace TextTemplateSourceGenerator;
 
 [Generator]
-public partial class TextTemplatePreprocessor : IIncrementalGenerator
+public partial class TextTemplateGenerator : IIncrementalGenerator
 {
     public void Initialize(IncrementalGeneratorInitializationContext context)
     {
