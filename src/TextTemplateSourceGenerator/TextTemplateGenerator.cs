@@ -9,5 +9,6 @@ public partial class TextTemplateGenerator : IIncrementalGenerator
     {
         context.RegisterPostInitializationOutput(AddAttribute);
         context.RegisterImplementationSourceOutput(FilterPreprocessor(context), EmitPreprocessor);
+        context.RegisterImplementationSourceOutput(FilterClassMember(context), EmitClassMember);
     }
 }

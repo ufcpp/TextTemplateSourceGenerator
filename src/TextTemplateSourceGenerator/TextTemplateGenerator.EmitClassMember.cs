@@ -9,24 +9,23 @@ namespace TextTemplateSourceGenerator;
 
 partial class TextTemplateGenerator
 {
-    private void EmitPreprocessor(SourceProductionContext context, ImmutableArray<PreprocessorTemplate> methods)
+    private void EmitClassMember(SourceProductionContext context, ImmutableArray<ClassMemberTemplate> templates)
     {
         var buffer = new StringBuilder();
 
         var ordinal = 0;
-        foreach (var (m, t, a) in methods)
+        foreach (var (type, template) in templates)
         {
-            var hintPath = GetPreprocessorFilename(m, ordinal++, buffer);
-            var generatedSource = SyntaxNodeFormatter.Format(m, t, a);
+            var hintPath = GetClassMemberFilename(type, ordinal++, buffer);
+            var generatedSource = ""; //todo: SyntaxNodeFormatter.Format(m, t, a);
             context.AddSource(hintPath, SourceText.From(generatedSource, Encoding.UTF8));
         }
     }
 
-    private static string GetPreprocessorFilename(MethodDeclarationSyntax method, int ordinal, StringBuilder buffer)
+    private static string GetClassMemberFilename(TypeDeclarationSyntax type, int ordinal, StringBuilder buffer)
     {
         buffer.Clear();
-        var t = (TypeDeclarationSyntax)method.Parent!;
-        buffer.Append($"{ordinal}_{t.Identifier.Text}_{method.Identifier.Text}_template.cs");
+        buffer.Append($"{ordinal}_{type.Identifier.Text}_membertemplate.cs");
         return buffer.ToString();
     }
 }
