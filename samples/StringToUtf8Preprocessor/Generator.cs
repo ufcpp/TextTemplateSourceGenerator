@@ -6,7 +6,7 @@ namespace StringToUtf8Preprocessor
 {
     partial class Generator
     {
-        [TextTemplate.Template(@"$<
+        [TextTemplate.TemplatePreprocessor(@"$<
 var buffer = new StringBuilder();
 
 if (!string.IsNullOrEmpty(@namespace))
