@@ -42,10 +42,10 @@ partial class TextTemplatePreprocessor
             foreach (var a in list.Attributes)
             {
                 var name = a.Name.ToString();
-                if (name == "Template"
-                    || name == "TemplateAttribute"
-                    || name.EndsWith(".Template")
-                    || name.EndsWith(".TemplateAttribute")
+                if (name == "TemplatePreprocessor"
+                    || name == "TemplatePreprocessorAttribute"
+                    || name.EndsWith(".TemplatePreprocessor")
+                    || name.EndsWith(".TemplatePreprocessorAttribute")
                     )
                 {
                     return a.ArgumentList;

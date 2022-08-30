@@ -17,15 +17,15 @@ partial class TextTemplatePreprocessor
 
         [System.Diagnostics.Conditional("COMPILE_TIME_ONLY")]
         [AttributeUsage(AttributeTargets.Method, Inherited = false, AllowMultiple = false)]
-        internal sealed class TemplateAttribute : Attribute
+        internal sealed class TemplatePreprocessorAttribute : Attribute
         {
             public TemplateLanguage Language { get; set; }
-            public TemplateAttribute(string template, string appendMethodName = null) { }
+            public TemplatePreprocessorAttribute(string template, string appendMethodName = null) { }
         }
 
         """;
     private static void AddAttribute(IncrementalGeneratorPostInitializationContext context)
     {
-        context.AddSource("TemplateAttribute.cs", SourceText.From(attributesText, Encoding.UTF8));
+        context.AddSource("TemplateAttributes.cs", SourceText.From(attributesText, Encoding.UTF8));
     }
 }

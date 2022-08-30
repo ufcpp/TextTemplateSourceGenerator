@@ -12,7 +12,7 @@ namespace TextTemplateSourceGeneratorTest
         {
             var c = CompilationHelper.Compile("", new TextTemplatePreprocessor());
             Assert.Empty(c.GetDiagnostics());
-            Assert.Contains(c.SyntaxTrees, s => s.FilePath.Contains("TemplateAttribute.cs"));
+            Assert.Contains(c.SyntaxTrees, s => s.FilePath.Contains("TemplateAttributes.cs"));
         }
 
         [Fact]
@@ -26,18 +26,18 @@ namespace TextTemplateSourceGeneratorTest
         [Fact]
         public void NoTemplateArguments()
         {
-            var c = CompilationHelper.Compile("class A { [TextTemplate.Template] private partial void M(); }", new TextTemplatePreprocessor());
+            var c = CompilationHelper.Compile("class A { [TextTemplate.TemplatePreprocessor] private partial void M(); }", new TextTemplatePreprocessor());
             Assert.Equal(2, c.SyntaxTrees.Count());
         }
 
         [Fact]
         public void NoPartial()
         {
-            var c = CompilationHelper.Compile("class A { [TextTemplate.Template(\"\")] private void M() { } }", new TextTemplatePreprocessor());
+            var c = CompilationHelper.Compile("class A { [TextTemplate.TemplatePreprocessor(\"\")] private void M() { } }", new TextTemplatePreprocessor());
             Assert.Empty(c.GetDiagnostics());
             Assert.Equal(2, c.SyntaxTrees.Count());
 
-            c = CompilationHelper.Compile("abstract class A { [TextTemplate.Template(\"\")] protected abstract void M(); }", new TextTemplatePreprocessor());
+            c = CompilationHelper.Compile("abstract class A { [TextTemplate.TemplatePreprocessor(\"\")] protected abstract void M(); }", new TextTemplatePreprocessor());
             Assert.Empty(c.GetDiagnostics());
             Assert.Equal(2, c.SyntaxTrees.Count());
         }
@@ -51,32 +51,32 @@ namespace TextTemplateSourceGeneratorTest
 
                 partial class A
                 {
-                    [Template("")]
+                    [TemplatePreprocessor("")]
                     public partial void M1(StringBuilder builder);
 
-                    [Template("")]
+                    [TemplatePreprocessor("")]
                     public partial void M2(StringBuilder builder);
                 }
 
                 partial class A
                 {
-                    [Template("")]
+                    [TemplatePreprocessor("")]
                     private partial void M3(StringBuilder builder);
 
-                    [Template("")]
+                    [TemplatePreprocessor("")]
                     private partial void M4(StringBuilder builder);
                 }
 
                 partial class B
                 {
-                    [Template("")]
+                    [TemplatePreprocessor("")]
                     internal partial void M(StringBuilder builder);
                 }
 
                 """, new TextTemplatePreprocessor());
 
             Assert.Empty(c.GetDiagnostics());
-            Assert.Equal(7, c.SyntaxTrees.Count()); // An added source, TemplateAttribute.cs, and files generated from 5 methods
+            Assert.Equal(7, c.SyntaxTrees.Count()); // An added source, TemplateAttributes.cs, and files generated from 5 methods
         }
 
         [Fact]
@@ -88,7 +88,7 @@ namespace TextTemplateSourceGeneratorTest
 
                 partial class A
                 {
-                    [Template("")]
+                    [TemplatePreprocessor("")]
                     public partial void M(StringBuilder builder);
                 }
                 """, new TextTemplatePreprocessor());
@@ -120,7 +120,7 @@ namespace TextTemplateSourceGeneratorTest
 
                 partial class A
                 {
-                    [TextTemplate.Template("($x, $y)")]
+                    [TextTemplate.TemplatePreprocessor("($x, $y)")]
                     public partial void M(System.Text.StringBuilder builder, object x, object y);
                 }
                 """, new TextTemplatePreprocessor());
@@ -149,7 +149,7 @@ namespace TextTemplateSourceGeneratorTest
 
                 partial class A
                 {
-                    [TextTemplate.Template(@"$<
+                    [TextTemplate.TemplatePreprocessor(@"$<
                 void a(object x) => builder.Append(x);
                 $>($x, $y)", "a")]
                     public partial void M(System.Text.StringBuilder builder, object x, object y);
@@ -186,7 +186,7 @@ namespace TextTemplateSourceGeneratorTest
 
                 partial class A
                 {
-                    [Template("")]
+                    [TemplatePreprocessor("")]
                     public partial void M(StringBuilder builder);
                 }
                 """, new TextTemplatePreprocessor());
