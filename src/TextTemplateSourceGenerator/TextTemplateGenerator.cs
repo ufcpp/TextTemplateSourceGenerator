@@ -8,6 +8,6 @@ public partial class TextTemplateGenerator : IIncrementalGenerator
     public void Initialize(IncrementalGeneratorInitializationContext context)
     {
         context.RegisterPostInitializationOutput(AddAttribute);
-        context.RegisterImplementationSourceOutput(Filter(context), Emit);
+        context.RegisterImplementationSourceOutput(FilterPreprocessor(context), EmitPreprocessor);
     }
 }
