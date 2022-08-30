@@ -7,20 +7,25 @@ using System.Text;
 using TextTemplateSourceGenerator.TemplateA.Formatter;
 using TextTemplateSourceGenerator.TemplateA.Parser;
 
-namespace TextTemplateSourceGenerator.TemplateA
+namespace TextTemplateSourceGenerator
 {
     [Generator]
     public class TextTemplatePreprocessor : ISourceGenerator
     {
         private const string attributeText = @"using System;
-namespace TextTemplate
+namespace TextTemplate;
+
+internal enum TemplateLanguage
 {
-    [System.Diagnostics.Conditional(""COMPILE_TIME_ONLY"")]
-    [AttributeUsage(AttributeTargets.Method, Inherited = false, AllowMultiple = false)]
-    sealed class TemplateAttribute : Attribute
-    {
-        public TemplateAttribute(string template, string appendMethodName = null) { }
-    }
+    ExperimentalA,
+}
+
+[System.Diagnostics.Conditional(""COMPILE_TIME_ONLY"")]
+[AttributeUsage(AttributeTargets.Method, Inherited = false, AllowMultiple = false)]
+internal sealed class TemplateAttribute : Attribute
+{
+    public TemplateLanguage Language { get; set; }
+    public TemplateAttribute(string template, string appendMethodName = null) { }
 }
 ";
 

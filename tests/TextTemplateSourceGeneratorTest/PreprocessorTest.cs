@@ -1,6 +1,6 @@
 ﻿using Microsoft.CodeAnalysis.CSharp;
 using System.Linq;
-using TextTemplateSourceGenerator.TemplateA;
+using TextTemplateSourceGenerator;
 using Xunit;
 
 namespace TextTemplateSourceGeneratorTest
@@ -89,6 +89,7 @@ partial class A
     public partial void M(StringBuilder builder);
 }", new TextTemplatePreprocessor());
 
+            var diags = c.GetDiagnostics();
             Assert.Empty(c.GetDiagnostics());
 
             var tree = c.SyntaxTrees.First(t => t.FilePath.EndsWith("A.M.cs"));
