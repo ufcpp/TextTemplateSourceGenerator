@@ -8,7 +8,7 @@ partial class TextTemplateGenerator
 {
     private const string methodAttributeName = "TextTemplate.TemplatePreprocessorAttribute";
 
-    private static IncrementalValueProvider<System.Collections.Immutable.ImmutableArray<MethodTemplate>> FilterPreprocessor(IncrementalGeneratorInitializationContext context)
+    private static IncrementalValueProvider<System.Collections.Immutable.ImmutableArray<PreprocessorTemplate>> FilterPreprocessor(IncrementalGeneratorInitializationContext context)
         => context.SyntaxProvider
             .CreateSyntaxProvider(
                 static (node, _) => IsSyntaxTargetForGeneration(node),
@@ -20,7 +20,7 @@ partial class TextTemplateGenerator
     private static bool IsSyntaxTargetForGeneration(SyntaxNode node) =>
         node is MethodDeclarationSyntax { AttributeLists.Count: > 0 };
 
-    private static MethodTemplate? GetSemanticTargetForPreprocessorGeneration(SemanticModel semanticModel, MethodDeclarationSyntax m)
+    private static PreprocessorTemplate? GetSemanticTargetForPreprocessorGeneration(SemanticModel semanticModel, MethodDeclarationSyntax m)
     {
         if (m.ParameterList.Parameters.Count == 0) return null;
         if (!m.Modifiers.Any(m => m.ValueText == "partial")) return null;

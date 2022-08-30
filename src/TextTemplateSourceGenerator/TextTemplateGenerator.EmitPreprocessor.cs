@@ -9,7 +9,7 @@ namespace TextTemplateSourceGenerator;
 
 partial class TextTemplateGenerator
 {
-    private void EmitPreprocessor(SourceProductionContext context, ImmutableArray<MethodTemplate> methods)
+    private void EmitPreprocessor(SourceProductionContext context, ImmutableArray<PreprocessorTemplate> methods)
     {
         var buffer = new StringBuilder();
 
