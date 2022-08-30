@@ -6,6 +6,8 @@ namespace TextTemplateSourceGenerator;
 
 partial class TextTemplatePreprocessor
 {
+    private const string methodAttributeName = "TextTemplate.TemplatePreprocessorAttribute";
+
     private static IncrementalValueProvider<System.Collections.Immutable.ImmutableArray<MethodTemplate>> Filter(IncrementalGeneratorInitializationContext context)
         => context.SyntaxProvider
             .CreateSyntaxProvider(
@@ -15,8 +17,6 @@ partial class TextTemplatePreprocessor
             .Where(x => x is not null)
             .Collect();
 
-    private const string methodAttributeName = "TextTemplate.TemplateAttribute";
-
     private static bool IsSyntaxTargetForGeneration(SyntaxNode node) =>
         node is MethodDeclarationSyntax { AttributeLists.Count: > 0 };
 
@@ -24,7 +24,7 @@ partial class TextTemplatePreprocessor
     {
         if (m.ParameterList.Parameters.Count == 0) return null;
         if (!m.Modifiers.Any(m => m.ValueText == "partial")) return null;
-        if (GetMethodTemplateAttribute(m) is not { } a) return null;
+        if (GetMethodTemplateAttribute(semanticModel, m) is not { } a) return null;
         if (a.Arguments.Count == 0) return null;
 
         var template = (string)semanticModel.GetConstantValue(a.Arguments[0].Expression).Value!;
@@ -35,40 +35,18 @@ partial class TextTemplatePreprocessor
         return new(m, template, appendMethodName);
     }
 
-    private static AttributeArgumentListSyntax? GetMethodTemplateAttribute(MemberDeclarationSyntax m)
+    private static AttributeArgumentListSyntax? GetMethodTemplateAttribute(SemanticModel semanticModel, MemberDeclarationSyntax m)
     {
         foreach (var list in m.AttributeLists)
         {
             foreach (var a in list.Attributes)
             {
-                var name = a.Name.ToString();
-                if (name == "TemplatePreprocessor"
-                    || name == "TemplatePreprocessorAttribute"
-                    || name.EndsWith(".TemplatePreprocessor")
-                    || name.EndsWith(".TemplatePreprocessorAttribute")
-                    )
-                {
+                if (semanticModel.GetSymbolInfo(a).Symbol is { ContainingType: var t }
+                    && t.ToDisplayString() == methodAttributeName)
                     return a.ArgumentList;
-                }
             }
         }
 
         return null;
-    }
-
-    static AttributeData? GetMethodTemplateAttribute(ISymbol methodSymbol)
-    {
-        foreach (var a in methodSymbol.GetAttributes())
-        {
-            if (a.AttributeClass?.ToDisplayString() != methodAttributeName) continue;
-
-            var args = a.ConstructorArguments;
-            if (args.Length < 1) continue;
-
-            //todo: Language = ...
-            return a;
-        }
-
-        return default;
     }
 }
