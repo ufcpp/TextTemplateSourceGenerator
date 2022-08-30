@@ -16,38 +16,25 @@ public class TemplateFormatter
                     // simply skip invalid syntax elements.
                     //throw new InvalidSyntaxException(x.Text, x.Range);
                 case SyntaxElementType.String:
-                    builder.Append(appendMethodName);
-                    builder.Append("""
-                        (@"
-                        """);
-                    builder.Append(x.Element.ToString());
-                    builder.Append("""
-                        ");
+                    builder.Append($"""
+                        {appendMethodName}(@"{x.Element.ToString()}");
                         """);
                     break;
                 case SyntaxElementType.Identifier:
                 case SyntaxElementType.Expression:
-                    builder.Append(appendMethodName);
-                    builder.Append("(");
-                    builder.Append(x.Element.ToString());
-                    builder.Append(");");
+                    builder.Append($"""
+                        {appendMethodName}({x.Element.ToString()});
+                        """);
                     break;
                 case SyntaxElementType.ControlStart:
-                    builder.Append(x.Element.ToString());
-                    builder.Append('{');
+                    builder.Append($$"""
+                        {{x.Element.ToString()}}{
+                        """);
                     break;
                 case SyntaxElementType.Raw:
                     builder.Append(x.Element.ToString());
                     break;
             }
         }
-
-        // builder.Append(x.Element.ToString());
-        // can be replaced to
-        // builder.Append(x.Element);
-        // if TargetFramework is netcoreapp2.1 or greater
-        // or
-        // fixed (char* p = x.Element) { builder.Append(p, x.Element.Length); }
-        // with unsafe option.
     }
 }
