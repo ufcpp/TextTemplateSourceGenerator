@@ -1,9 +1,13 @@
 ﻿using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis;
+using TextTemplateSourceGenerator.Languages.TemplateA.Formatter;
 
 namespace TextTemplateSourceGenerator;
 
-public record ClassMemberTemplate(TypeDeclarationSyntax Method, string Template);
+public record ClassMemberTemplate(TypeDeclarationSyntax Type, string Template, int LanguageCode)
+{
+    public string Format() => SyntaxNodeFormatter.FormatClassMember(Type, Template, LanguageCode);
+}
 
 partial class TextTemplateGenerator
 {
@@ -24,8 +28,15 @@ partial class TextTemplateGenerator
         if (GetAttribute(semanticModel, t, ClassMemberAttributeName) is not { } a) return null;
         if (a.Arguments.Count == 0) return null;
 
+
+        int language = 0;
+        if (a.Arguments.FirstOrDefault(arg => arg.NameEquals is { Name.Identifier.Value: "Language" }) is { } langArg)
+        {
+            language = (int?)semanticModel.GetConstantValue(langArg.Expression).Value ?? 0;
+        }
+
         var template = (string)semanticModel.GetConstantValue(a.Arguments[0].Expression).Value!;
 
-        return new(t, template);
+        return new(t, template, language);
     }
 }

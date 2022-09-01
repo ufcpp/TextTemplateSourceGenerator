@@ -11,12 +11,12 @@ partial class TextTemplateGenerator
         #nullable enable
         using System;
         namespace TextTemplate;
-
-        internal enum TemplateLanguage
+        
+        internal enum PreprocessLanguage
         {
-            ExperimentalA,
+            ExperimentalA = 255,
         }
-
+        
         /// <summary>
         /// Generates a template preprocessor method.
         /// </summary>
@@ -24,10 +24,16 @@ partial class TextTemplateGenerator
         [AttributeUsage(AttributeTargets.Method, Inherited = false, AllowMultiple = false)]
         internal sealed class TemplatePreprocessorAttribute : Attribute
         {
-            public TemplateLanguage Language { get; set; }
+            public PreprocessLanguage Language { get; set; }
             public TemplatePreprocessorAttribute(string template, string? appendMethodName = null) { }
         }
         
+        internal enum TemplateLanguage
+        {
+            Scriban = 1,
+            ExperimentalA = 255,
+        }
+
         /// <summary>
         /// Generates class members from a template.
         /// </summary>

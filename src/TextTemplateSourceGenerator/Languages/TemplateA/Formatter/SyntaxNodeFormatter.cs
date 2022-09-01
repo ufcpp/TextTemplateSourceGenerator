@@ -8,7 +8,7 @@ namespace TextTemplateSourceGenerator.Languages.TemplateA.Formatter;
 
 public class SyntaxNodeFormatter
 {
-    public static string FormatClassMember(TypeDeclarationSyntax type, string template)
+    public static string FormatClassMember(TypeDeclarationSyntax type, string template, int language)
     {
         var sb = new StringBuilder();
         sb.Append("""
@@ -18,13 +18,28 @@ public class SyntaxNodeFormatter
             """);
 
         var n = AppendDeclarations(sb, type);
-        sb.Append(Render(template));
+
+        var body = language switch
+        {
+            1 => RenderScriban(template),
+            255 => RenderTemplateA(template),
+            _ => template,
+        };
+
+        sb.Append(body);
         AppendClose(sb, n);
 
         return sb.ToString();
     }
 
-    private static string Render(string template)
+    private static string RenderScriban(string template)
+    {
+        //todo: error handling
+        var t = Scriban.Template.Parse(template);
+        return t.Render();
+    }
+
+    private static string RenderTemplateA(string template)
     {
         var sb = new StringBuilder();
         TemplateFormatter.Format(sb, new(template), "_env.Append");

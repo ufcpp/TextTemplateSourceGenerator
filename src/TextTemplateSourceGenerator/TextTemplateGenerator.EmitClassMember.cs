@@ -3,7 +3,6 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
 using System.Collections.Immutable;
 using System.Text;
-using TextTemplateSourceGenerator.Languages.TemplateA.Formatter;
 
 namespace TextTemplateSourceGenerator;
 
@@ -14,10 +13,10 @@ partial class TextTemplateGenerator
         var buffer = new StringBuilder();
 
         var ordinal = 0;
-        foreach (var (type, template) in templates)
+        foreach (var t in templates)
         {
-            var hintPath = GetClassMemberFilename(type, ordinal++, buffer);
-            var generatedSource = SyntaxNodeFormatter.FormatClassMember(type, template);
+            var hintPath = GetClassMemberFilename(t.Type, ordinal++, buffer);
+            var generatedSource = t.Format();
             context.AddSource(hintPath, SourceText.From(generatedSource, Encoding.UTF8));
         }
     }
