@@ -73,7 +73,7 @@ public class SyntaxNodeHelper
     {
         foreach (var u in usings)
         {
-            sb.Append(u.ToFullString());
+            sb.Append(u.WithLeadingTrivia().ToFullString());
         }
     }
 
