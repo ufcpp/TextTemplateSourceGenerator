@@ -3,19 +3,17 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace ScribanSourceGenerator;
 
-public record ClassNameTemplate(TypeDeclarationSyntax Type, string Template)
+public record ClassNameTemplate(TypeDeclarationSyntax Type, string[] Templates)
 {
     public static ClassNameTemplate? Create(SemanticModel semanticModel, TypeDeclarationSyntax type)
     {
         if (!type.Modifiers.Any(m => m.ValueText == "partial")) return null;
-        if (GetAttribute(semanticModel, type, "ScribanGeneretor.ClassMemberAttribute") is not { } a) return null;
-        if (a.Arguments.Count == 0) return null;
-
-        var template = (string)semanticModel.GetConstantValue(a.Arguments[0].Expression).Value!;
-        return new(type, template);
+        var args = GetAttribute(semanticModel, type, "ScribanGeneretor.ClassMemberAttribute").ToArray();
+        if (args.Length == 0) return null;
+        return new(type, args);
     }
 
-    private static AttributeArgumentListSyntax? GetAttribute(SemanticModel semanticModel, MemberDeclarationSyntax m, string attributeFullName)
+    private static IEnumerable<string> GetAttribute(SemanticModel semanticModel, MemberDeclarationSyntax m, string attributeFullName)
     {
         foreach (var list in m.AttributeLists)
         {
@@ -23,10 +21,14 @@ public record ClassNameTemplate(TypeDeclarationSyntax Type, string Template)
             {
                 if (semanticModel.GetSymbolInfo(a).Symbol is { ContainingType: var t }
                     && t.ToDisplayString() == attributeFullName)
-                    return a.ArgumentList;
+                {
+                    if (a.ArgumentList is not { } args) continue;
+                    if (args.Arguments.FirstOrDefault(arg => arg.NameEquals is null) is not { } arg) continue;
+
+                    var template = (string)semanticModel.GetConstantValue(arg.Expression).Value!;
+                    yield return template;
+                }
             }
         }
-
-        return null;
     }
 }

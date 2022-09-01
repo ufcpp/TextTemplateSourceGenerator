@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ScribanSourceGeneratorSample
 {
@@ -10,6 +6,11 @@ namespace ScribanSourceGeneratorSample
         {{ $x = ["a","abc","ABC","xyz"] -}}
         {{- for $i in 0..<$x.size ~}}
             public const string X{{ $i }} = "{{ $x[$i] }}";
+        {{ end }}
+        """)]
+    [ScribanGeneretor.ClassMember("""
+        {{- for $i in 0..5 ~}}
+            public const int X{{ $i }} = "{{ $i }}";
         {{ end }}
         """)]
     internal partial class ClassA

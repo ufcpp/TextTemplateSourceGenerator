@@ -48,8 +48,12 @@ public class ScribanSourceGenerator : IIncrementalGenerator
 
                 """);
             var nest = SyntaxNodeHelper.AppendDeclarations(buffer, t.Type);
-            var result = Scriban.Template.Parse(t.Template).Render(); //todo: error handling
-            buffer.Append(result);
+
+            foreach (var template in t.Templates)
+            {
+                var result = Scriban.Template.Parse(template).Render(); //todo: error handling
+                buffer.Append(result);
+            }
             SyntaxNodeHelper.AppendClose(buffer, nest);
             return buffer.ToString();
         }
