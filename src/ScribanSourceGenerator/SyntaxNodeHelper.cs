@@ -15,10 +15,11 @@ public class SyntaxNodeHelper
         switch (node)
         {
             case CompilationUnitSyntax c:
-                AppendUsings(sb, c);
+                AppendUsings(sb, c.Usings);
                 return nest;
             case BaseNamespaceDeclarationSyntax ns:
                 AppendNamespaceOpen(sb, ns);
+                AppendUsings(sb, ns.Usings);
                 return nest + 1;
             case TypeDeclarationSyntax t:
                 AppendTypeOpen(sb, t);
@@ -68,9 +69,9 @@ public class SyntaxNodeHelper
         """);
     }
 
-    private static void AppendUsings(StringBuilder sb, CompilationUnitSyntax c)
+    private static void AppendUsings(StringBuilder sb, SyntaxList<UsingDirectiveSyntax> usings)
     {
-        foreach (var u in c.Usings)
+        foreach (var u in usings)
         {
             sb.Append(u.ToFullString());
         }

@@ -2,6 +2,8 @@
 
 namespace ScribanSourceGeneratorSample
 {
+    using System.Text;
+
     [ScribanGeneretor.ClassMember("""
         {{ $x = ["a","abc","ABC","xyz"] -}}
         {{- for $i in 0..<$x.size ~}}
@@ -10,7 +12,7 @@ namespace ScribanSourceGeneratorSample
         """)]
     [ScribanGeneretor.ClassMember("""
         {{- for $i in 0..5 ~}}
-            public const int X{{ $i }} = "{{ $i }}";
+            public const int Y{{ $i }} = {{ $i }};
         {{ end }}
         """)]
     internal partial class ClassA
