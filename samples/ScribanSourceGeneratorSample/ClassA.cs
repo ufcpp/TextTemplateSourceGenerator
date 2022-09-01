@@ -40,6 +40,12 @@ namespace ScribanSourceGeneratorSample
     [ScribanGeneretor.ClassMember("")]
     public partial record struct R3 { }
 
+    [ScribanGeneretor.ClassMember("")]
+    public partial record struct R<T1, T2>
+        where T1 : struct
+        where T2 : notnull
+    { }
+
     // not supoprted: non-partial class
     [ScribanGeneretor.ClassMember("")] public class NonPartial1 { }
     [ScribanGeneretor.ClassMember("")] public record NonPartial2 { }
