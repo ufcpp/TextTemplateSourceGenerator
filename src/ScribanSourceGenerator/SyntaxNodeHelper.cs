@@ -33,6 +33,13 @@ public class SyntaxNodeHelper
         sb.Append("partial ");
         sb.Append(t.Keyword.Text);
         sb.Append(' ');
+
+        if (t is RecordDeclarationSyntax { ClassOrStructKeyword: var k } && k != default)
+        {
+            sb.Append(k.Text);
+            sb.Append(' ');
+        }
+
         sb.Append(t.Identifier.Text);
 
         if (t.TypeParameterList is { } tl)
