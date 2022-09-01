@@ -17,7 +17,7 @@ partial class TextTemplateGenerator
         foreach (var (m, t, a) in methods)
         {
             var hintPath = GetPreprocessorFilename(m, ordinal++, buffer);
-            var generatedSource = SyntaxNodeFormatter.Format(m, t, a);
+            var generatedSource = SyntaxNodeFormatter.FormatPreprocessorMethod(m, t, a);
             context.AddSource(hintPath, SourceText.From(generatedSource, Encoding.UTF8));
         }
     }

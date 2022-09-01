@@ -39,7 +39,7 @@ partial class TextTemplateGenerator
             foreach (var a in list.Attributes)
             {
                 if (semanticModel.GetSymbolInfo(a).Symbol is { ContainingType: var t }
-                    && t.ToDisplayString() == PreprocessorAttributeName)
+                    && t.ToDisplayString() == attributeFullName)
                     return a.ArgumentList;
             }
         }
