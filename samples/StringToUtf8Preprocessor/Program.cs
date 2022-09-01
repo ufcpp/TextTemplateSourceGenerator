@@ -1,4 +1,4 @@
-﻿using StringToUtf8Preprocessor;
+using StringToUtf8Preprocessor;
 using System;
 
 Console.WriteLine(Generator.Generate(null, "Literal", new[]

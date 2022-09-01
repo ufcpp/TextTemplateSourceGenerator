@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using TextTemplateSourceGenerator.Languages.TemplateA.Parser;
 
 namespace TextTemplateSourceGeneratorTest

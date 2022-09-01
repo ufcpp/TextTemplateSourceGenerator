@@ -18,7 +18,7 @@ namespace TextTemplateSourceGeneratorTest
         [InlineData("""
             any text
             not contain dollar sign
-            É∂ÑDÇ†íÜ
+            Œ©–î„ÅÇ‰∏≠
             !"#%&'()=~|`{+*}<>?_
 
             """)]
@@ -38,9 +38,9 @@ namespace TextTemplateSourceGeneratorTest
 
         [Theory]
         [InlineData("$aaa")]
-        [InlineData("$Ç†Ç†Ç†")]
+        [InlineData("$„ÅÇ„ÅÇ„ÅÇ")]
         [InlineData("$a123")]
-        [InlineData("$a\u0301Ç†\u3099")]
+        [InlineData("$a\u0301„ÅÇ\u3099")]
         public void Identifier(string source)
         {
             var result = new TemplateParser(source).ToList();
@@ -57,9 +57,9 @@ namespace TextTemplateSourceGeneratorTest
 
         [Theory]
         [InlineData("$aaa=$bbb")]
-        [InlineData("$Ç†Ç†Ç†/$É∂ÑDíÜ")]
+        [InlineData("$„ÅÇ„ÅÇ„ÅÇ/$Œ©–î‰∏≠")]
         [InlineData("$a123 * $b456")]
-        [InlineData("$a\u0301Ç†\u3099, $b\u0302Ç¢\u309A")]
+        [InlineData("$a\u0301„ÅÇ\u3099, $b\u0302„ÅÑ\u309A")]
         public void TwoIdentifiers(string source)
         {
             var result = new TemplateParser(source).ToList();

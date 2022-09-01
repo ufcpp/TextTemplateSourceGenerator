@@ -1,4 +1,4 @@
-﻿namespace TextTemplateSourceGenerator.Languages.TemplateA.Parser;
+namespace TextTemplateSourceGenerator.Languages.TemplateA.Parser;
 
 public enum SyntaxElementType
 {

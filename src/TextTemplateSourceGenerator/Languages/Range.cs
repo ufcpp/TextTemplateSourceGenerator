@@ -1,4 +1,4 @@
-﻿namespace TextTemplateSourceGenerator.Languages;
+namespace TextTemplateSourceGenerator.Languages;
 
 public readonly struct Range : IEquatable<Range>
 {

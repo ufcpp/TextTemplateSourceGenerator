@@ -1,4 +1,4 @@
-﻿using System.Text;
+using System.Text;
 using TextTemplateSourceGenerator.Languages.TemplateA.Parser;
 
 namespace TextTemplateSourceGenerator.Languages.TemplateA.Formatter;
@@ -13,8 +13,8 @@ public class TemplateFormatter
             {
                 case SyntaxElementType.Invalid:
                     break;
-                    // simply skip invalid syntax elements.
-                    //throw new InvalidSyntaxException(x.Text, x.Range);
+                // simply skip invalid syntax elements.
+                //throw new InvalidSyntaxException(x.Text, x.Range);
                 case SyntaxElementType.String:
                     builder.Append($"""
                         {appendMethodName}(@"{x.Element.ToString()}");

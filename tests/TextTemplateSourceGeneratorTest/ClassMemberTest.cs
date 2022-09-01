@@ -1,4 +1,4 @@
-﻿using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp;
 using System.Linq;
 using TextTemplateSourceGenerator;
 using Xunit;

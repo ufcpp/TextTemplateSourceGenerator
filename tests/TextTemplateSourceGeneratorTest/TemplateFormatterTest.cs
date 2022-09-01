@@ -1,4 +1,4 @@
-﻿using System.Text;
+using System.Text;
 using TextTemplateSourceGenerator.Languages.TemplateA.Formatter;
 using Xunit;
 

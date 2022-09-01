@@ -1,4 +1,4 @@
-﻿using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 
@@ -27,7 +27,7 @@ partial class TextTemplateGenerator
         var template = (string)semanticModel.GetConstantValue(a.Arguments[0].Expression).Value!;
 
         string? appendMethodName = null;
-        if(a.Arguments.Count >= 2) appendMethodName = (string?)semanticModel.GetConstantValue(a.Arguments[1].Expression).Value;
+        if (a.Arguments.Count >= 2) appendMethodName = (string?)semanticModel.GetConstantValue(a.Arguments[1].Expression).Value;
 
         return new(m, template, appendMethodName);
     }

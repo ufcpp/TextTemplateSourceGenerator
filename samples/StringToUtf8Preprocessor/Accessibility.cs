@@ -1,4 +1,4 @@
-﻿namespace StringToUtf8Preprocessor
+namespace StringToUtf8Preprocessor
 {
     public enum Accessibility
     {

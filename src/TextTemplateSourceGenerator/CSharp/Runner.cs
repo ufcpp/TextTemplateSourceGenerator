@@ -1,4 +1,4 @@
-﻿using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis;
 using System.Reflection;
 using System.Runtime.Loader;
